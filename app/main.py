@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.infrastructure.database import engine, Base
 from app.infrastructure import orm_models # Para que SQLAlchemy registre los modelos
+from app.presentation.routes import auth
 
 # Create tables in DB if they do not exist
 Base.metadata.create_all(bind=engine)
@@ -10,6 +11,8 @@ app = FastAPI(
     description="API REST para la gestión de materias, grupos, equipos y evaluaciones con rúbrica.",
     version="1.0.0"
 )
+
+app.include_router(auth.router)
 
 @app.get("/")
 def root():
