@@ -1,0 +1,361 @@
+openapi: 3.0.3
+info:
+  title: API Sistema de Exposiciones
+  description: API REST para la gestión de materias, grupos, equipos y evaluaciones con rúbrica.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Servidor de Desarrollo (Local)
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Auth
+    description: Operaciones de autenticación y tokens
+  - name: Materias
+    description: Gestión del catálogo de materias
+  - name: Grupos
+    description: Organización de alumnos por materia y periodo
+  - name: Alumnos
+    description: Registro y consulta de estudiantes
+  - name: Equipos
+    description: Conformación de equipos de trabajo
+  - name: Exposiciones
+    description: Programación de eventos de exposición
+  - name: Evaluaciones
+    description: Registro de calificaciones y rúbricas
+
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      security: []
+      summary: Autenticación de usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        200:
+          description: Autenticación exitosa. Devuelve el JWT.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+
+  /materias:
+    get:
+      tags: [Materias]
+      summary: Listar materias con paginación
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+        - in: query
+          name: nombre
+          schema:
+            type: string
+          description: Filtrar materias por coincidencia en el nombre
+      responses:
+        200:
+          description: Operación exitosa. Lista de materias recuperada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedMaterias'
+
+  /alumnos:
+    get:
+      tags: [Alumnos]
+      summary: Obtener lista de alumnos
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+      responses:
+        200:
+          description: Lista de alumnos obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Alumno'
+    post:
+      tags: [Alumnos]
+      summary: Registrar un nuevo alumno
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlumnoInput'
+      responses:
+        201:
+          description: Alumno creado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alumno'
+
+  /grupos:
+    post:
+      tags: [Grupos]
+      summary: Crear un nuevo grupo escolar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrupoInput'
+      responses:
+        201:
+          description: Grupo creado
+
+  /exposiciones:
+    get:
+      tags: [Exposiciones]
+      summary: Listar exposiciones programadas
+      responses:
+        200:
+          description: Lista de exposiciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Exposicion'
+
+  /evaluaciones:
+    post:
+      tags: [Evaluaciones]
+      summary: Registrar evaluación completa mediante rúbrica
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluacionInput'
+      responses:
+        201:
+          description: Evaluación registrada correctamente
+        400:
+          $ref: '#/components/responses/BadRequest'
+        409:
+          $ref: '#/components/responses/Conflict'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    Page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 0
+    Size:
+      name: size
+      in: query
+      schema:
+        type: integer
+        default: 10
+
+  responses:
+    BadRequest:
+      description: La solicitud es inválida o mal formada
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Token ausente o inválido
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: El recurso solicitado no existe
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Conflict:
+      description: Conflicto con el estado actual del servidor (ej. duplicado)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-03-03T20:30:00Z"
+        status:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: "Bad Request"
+        message:
+          type: string
+          example: "El campo 'nombre' es obligatorio."
+        path:
+          type: string
+          example: "/api/v1/materias"
+
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          example: "20210345"
+        password:
+          type: string
+          format: password
+          example: "p4ssw0rd!"
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        expiresIn:
+          type: integer
+          description: Segundos de validez
+          example: 3600
+
+    Materia:
+      type: object
+      properties:
+        id_materia:
+          type: integer
+          example: 1
+        clave_materia:
+          type: string
+          example: "SIST-101"
+        nombre_materia:
+          type: string
+          example: "Arquitectura de Software"
+
+    Alumno:
+      type: object
+      properties:
+        id_alumno:
+          type: integer
+          example: 10
+        matricula:
+          type: string
+          example: "20260012"
+        nombre:
+          type: string
+          example: "Juan Pérez"
+        correo:
+          type: string
+          example: "juan.perez@universidad.edu"
+
+    AlumnoInput:
+      type: object
+      required: [matricula, nombre, correo]
+      properties:
+        matricula:
+          type: string
+          example: "20260012"
+        nombre:
+          type: string
+          example: "Juan Pérez"
+        correo:
+          type: string
+          example: "juan.perez@universidad.edu"
+
+    GrupoInput:
+      type: object
+      required: [nombre_grupo, id_materia]
+      properties:
+        nombre_grupo:
+          type: string
+          example: "7mo A"
+        id_materia:
+          type: integer
+          example: 1
+
+    Exposicion:
+      type: object
+      properties:
+        id_exposicion:
+          type: integer
+          example: 101
+        tema:
+          type: string
+          example: "Introducción a Docker"
+        fecha:
+          type: string
+          format: date
+          example: "2026-04-15"
+        id_equipo:
+          type: integer
+          example: 5
+
+    EvaluacionInput:
+      type: object
+      required: [id_exposicion, id_alumno_evaluador, detalles]
+      properties:
+        id_exposicion:
+          type: integer
+          example: 2
+        id_alumno_evaluador:
+          type: integer
+          example: 5
+        comentarios:
+          type: string
+          example: "Excelente dominio del tema."
+        detalles:
+          type: array
+          items:
+            type: object
+            required: [id_criterio, calificacion]
+            properties:
+              id_criterio:
+                type: integer
+                example: 1
+              calificacion:
+                type: number
+                minimum: 0
+                maximum: 10
+                example: 9.5
+
+    PagedMaterias:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Materia'
+        totalElements:
+          type: integer
+          example: 50
+        totalPages:
+          type: integer
+          example: 5
