@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Plus, Search, User, ChevronLeft, ChevronRight, Filter, X } from 'lucide-react';
+import { Plus, Search, User, ChevronLeft, ChevronRight, Filter, X, Trash2, Edit2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -12,6 +12,7 @@ const Alumnos = () => {
   const [size] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingAlumno, setEditingAlumno] = useState(null);
   const [formData, setFormData] = useState({ matricula: '', nombre: '', correo: '', password: '' });
   const [errors, setErrors] = useState({});
 
@@ -45,13 +46,31 @@ const Alumnos = () => {
     if (!validate()) return;
 
     try {
-      await api.post('/alumnos', formData);
-      toast.success('Alumno registrado con éxito');
+      if (editingAlumno) {
+        await api.put(`/alumnos/${editingAlumno.id_alumno}`, formData);
+        toast.success('Alumno actualizado con éxito');
+      } else {
+        await api.post('/alumnos', formData);
+        toast.success('Alumno registrado con éxito');
+      }
       setIsModalOpen(false);
+      setEditingAlumno(null);
       setFormData({ matricula: '', nombre: '', correo: '', password: '' });
       fetchAlumnos();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Error al registrar alumno');
+      toast.error(error.response?.data?.detail || 'Error al procesar la solicitud');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('¿Estás seguro de que deseas eliminar a este alumno?')) {
+      try {
+        await api.delete(`/alumnos/${id}`);
+        toast.success('Alumno eliminado con éxito');
+        fetchAlumnos();
+      } catch (error) {
+        toast.error('Error al eliminar alumno');
+      }
     }
   };
 
@@ -77,7 +96,11 @@ const Alumnos = () => {
           <button className="btn-outline glass" aria-label="Filtrar">
             <Filter size={20} />
           </button>
-          <button className="btn-primary" onClick={() => setIsModalOpen(true)}>
+          <button className="btn-primary" onClick={() => {
+            setEditingAlumno(null);
+            setFormData({ matricula: '', nombre: '', correo: '', password: '' });
+            setIsModalOpen(true);
+          }}>
             <Plus size={20} />
             <span>Nuevo Alumno</span>
           </button>
@@ -114,7 +137,23 @@ const Alumnos = () => {
                       <span className="status-pill active">Activo</span>
                     </td>
                     <td className="text-right">
-                      <button className="text-btn">Editar</button>
+                      <div className="action-buttons">
+                        <button className="text-btn" onClick={() => {
+                          setEditingAlumno(alumno);
+                          setFormData({ 
+                            matricula: alumno.matricula, 
+                            nombre: alumno.nombre, 
+                            correo: alumno.correo, 
+                            password: '' 
+                          });
+                          setIsModalOpen(true);
+                        }} title="Editar">
+                          <Edit2 size={18} />
+                        </button>
+                        <button className="text-btn delete-btn" onClick={() => handleDelete(alumno.id_alumno)} title="Eliminar">
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 )) : (
@@ -159,7 +198,7 @@ const Alumnos = () => {
               className="glass modal-content"
             >
               <div className="modal-header">
-                <h3>Nuevo Alumno</h3>
+                <h3>{editingAlumno ? 'Editar Alumno' : 'Nuevo Alumno'}</h3>
                 <button onClick={() => setIsModalOpen(false)} className="close-btn"><X /></button>
               </div>
               <form onSubmit={handleSubmit} className="modal-form">
@@ -206,7 +245,7 @@ const Alumnos = () => {
                 </div>
                 <div className="modal-footer">
                   <button type="button" onClick={() => setIsModalOpen(false)} className="btn-outline">Cancelar</button>
-                  <button type="submit" className="btn-primary">Registrar Alumno</button>
+                  <button type="submit" className="btn-primary">{editingAlumno ? 'Guardar Cambios' : 'Registrar Alumno'}</button>
                 </div>
               </form>
             </motion.div>
@@ -327,19 +366,36 @@ const Alumnos = () => {
           color: #10b981;
         }
 
+        .action-buttons {
+          display: flex;
+          justify-content: flex-end;
+          gap: 8px;
+        }
+
         .text-btn {
           background: none;
           border: none;
           color: var(--primary);
           cursor: pointer;
           font-weight: 600;
-          padding: 8px 12px;
+          padding: 8px;
           border-radius: 8px;
           transition: var(--transition);
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .text-btn:hover {
           background: rgba(139, 92, 246, 0.1);
+        }
+
+        .delete-btn {
+          color: #ef4444;
+        }
+
+        .delete-btn:hover {
+          background: rgba(239, 68, 68, 0.1);
         }
 
         .empty-row {

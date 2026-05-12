@@ -10,6 +10,8 @@ import Grupos from './pages/Grupos';
 import Exposiciones from './pages/Exposiciones';
 import Evaluaciones from './pages/Evaluaciones';
 
+import Register from './pages/Register';
+
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
   
@@ -26,6 +28,7 @@ function App() {
         <Toaster position="top-right" richColors />
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           
           <Route path="/" element={
             <ProtectedRoute>

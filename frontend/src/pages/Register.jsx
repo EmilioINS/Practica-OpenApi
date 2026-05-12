@@ -1,25 +1,38 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { LogIn, Lock, User } from 'lucide-react';
+import { UserPlus, Lock, User } from 'lucide-react';
+import { toast } from 'sonner';
 
-const Login = () => {
+const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden.');
+      return;
+    }
+
     setLoading(true);
     try {
-      await login(username, password);
-      navigate('/');
+      await register(username, password);
+      toast.success('Cuenta creada exitosamente. Ahora puedes iniciar sesión.');
+      navigate('/login');
     } catch (err) {
-      setError('Credenciales inválidas. Inténtalo de nuevo.');
+      if (err.response?.status === 400) {
+        setError(err.response.data.detail || 'Error al registrar usuario.');
+      } else {
+        setError('Ocurrió un error al crear la cuenta. Inténtalo de nuevo.');
+      }
     } finally {
       setLoading(false);
     }
@@ -33,10 +46,10 @@ const Login = () => {
       <div className="glass login-card animate-fade">
         <div className="login-header">
           <div className="logo-circle">
-            <LogIn size={32} color="var(--primary)" />
+            <UserPlus size={32} color="var(--primary)" />
           </div>
-          <h1>Bienvenido</h1>
-          <p>Ingresa tus credenciales para continuar</p>
+          <h1>Crear Cuenta</h1>
+          <p>Ingresa tus datos para registrarte</p>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
@@ -62,16 +75,27 @@ const Login = () => {
             />
           </div>
 
+          <div className="input-group">
+            <Lock size={20} className="input-icon" />
+            <input
+              type="password"
+              placeholder="Confirmar Contraseña"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+
           {error && <p className="error-message">{error}</p>}
 
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+            {loading ? 'Creando cuenta...' : 'Registrarse'}
           </button>
           
           <div className="register-link">
-            ¿No tienes una cuenta?{' '}
-            <span onClick={() => navigate('/register')} className="link-text">
-              Regístrate aquí
+            ¿Ya tienes una cuenta?{' '}
+            <span onClick={() => navigate('/login')} className="link-text">
+              Inicia sesión
             </span>
           </div>
         </form>
@@ -179,7 +203,7 @@ const Login = () => {
           opacity: 0.7;
           cursor: not-allowed;
         }
-
+        
         .register-link {
           text-align: center;
           font-size: 0.9rem;
@@ -203,4 +227,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
