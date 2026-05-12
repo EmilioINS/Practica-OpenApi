@@ -26,3 +26,8 @@ htmlcov/
 
 # Gemini / Scratch files
 scratch/
+
+# Backend files
+app/
+openapi 3.0.3.yml
+requirements.txt
