@@ -34,10 +34,12 @@ class AlumnoBase(BaseModel):
     correo: EmailStr
 
 class AlumnoInput(AlumnoBase):
-    password: Optional[str] = None # Added for auth
+    password: Optional[str] = None
+    id_equipo: Optional[int] = None
 
 class Alumno(AlumnoBase):
     id_alumno: int
+    id_equipo: Optional[int] = None
 
     class Config:
         from_attributes = True
@@ -47,12 +49,30 @@ class GrupoInput(BaseModel):
     nombre_grupo: str
     id_materia: int
 
+# Equipos
+class EquipoInput(BaseModel):
+    nombre_equipo: str
+    id_grupo: int
+
+class Equipo(BaseModel):
+    id_equipo: int
+    nombre_equipo: str
+    id_grupo: int
+
+    class Config:
+        from_attributes = True
+
 # Exposiciones
-class Exposicion(BaseModel):
-    id_exposicion: int
+class ExposicionBase(BaseModel):
     tema: str
     fecha: date
     id_equipo: int
+
+class ExposicionInput(ExposicionBase):
+    pass
+
+class Exposicion(ExposicionBase):
+    id_exposicion: int
 
     class Config:
         from_attributes = True

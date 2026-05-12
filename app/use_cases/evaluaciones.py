@@ -3,6 +3,23 @@ from fastapi import HTTPException, status
 from app.infrastructure.orm_models import EvaluacionORM, EvaluacionDetalleORM, ExposicionORM, AlumnoORM, CriterioEvaluacionORM
 from app.domain.entities import EvaluacionInput
 
+def get_criterios(db: Session):
+    criterios = db.query(CriterioEvaluacionORM).all()
+    # Seed if empty for convenience in this practice
+    if not criterios:
+        default_criterios = [
+            "Dominio del tema",
+            "Material de apoyo",
+            "Claridad al hablar",
+            "Trabajo en equipo"
+        ]
+        for desc in default_criterios:
+            db.add(CriterioEvaluacionORM(descripcion=desc))
+        db.commit()
+        criterios = db.query(CriterioEvaluacionORM).all()
+    
+    return [{"id": c.id_criterio, "nombre": c.descripcion} for c in criterios]
+
 def create_evaluacion(db: Session, eval_in: EvaluacionInput):
     if not db.query(ExposicionORM).filter(ExposicionORM.id_exposicion == eval_in.id_exposicion).first():
         raise HTTPException(status_code=400, detail="Exposición no encontrada")

@@ -3,3 +3,26 @@ backend.md
 __pycache__/
 venv/
 *.pyc
+
+# MacOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Editor directories and files
+*.swp
+*.swo
+
+# Python tests/coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases
+*.sqlite3
+*.db
+
+# Gemini / Scratch files
+scratch/

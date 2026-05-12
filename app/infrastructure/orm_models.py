@@ -23,8 +23,10 @@ class AlumnoORM(Base):
     nombre = Column(String)
     correo = Column(String, unique=True, index=True)
     id_usuario = Column(Integer, ForeignKey("usuarios.id"), nullable=True)
+    id_equipo = Column(Integer, ForeignKey("equipos.id_equipo"), nullable=True)
     
     usuario = relationship("Usuario")
+    equipo = relationship("EquipoORM", back_populates="integrantes")
 
 class GrupoORM(Base):
     __tablename__ = "grupos"
@@ -43,6 +45,7 @@ class EquipoORM(Base):
     
     grupo = relationship("GrupoORM", back_populates="equipos")
     exposiciones = relationship("ExposicionORM", back_populates="equipo")
+    integrantes = relationship("AlumnoORM", back_populates="equipo")
 
 class ExposicionORM(Base):
     __tablename__ = "exposiciones"
