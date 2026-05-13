@@ -39,6 +39,14 @@ const Dashboard = () => {
     );
   }
 
+  if (!stats) {
+    return (
+      <div className="dashboard animate-fade flex-center" style={{ height: '60vh' }}>
+        <p style={{ fontSize: '1.2rem', color: '#ef4444' }}>⚠️ No se pudieron cargar las estadísticas. Revisa la conexión con el servidor.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard animate-fade">
       <div className="welcome-section">
