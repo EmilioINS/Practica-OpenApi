@@ -1,54 +1,54 @@
-# API Sistema de Exposiciones - Backend FastAPI
+# Sistema de Exposiciones - Frontend React
 
-Este proyecto implementa el backend para la gestión de materias, alumnos, grupos, exposiciones y rúbricas de evaluación, basado en una arquitectura **Clean Architecture**.
+Este proyecto implementa el frontend para la gestión de materias, alumnos, grupos, exposiciones y rúbricas de evaluación, permitiendo a los usuarios interactuar con el sistema a través de una interfaz moderna y responsiva.
 
 ## Tecnologías Utilizadas
-- **Framework:** FastAPI (Python 3)
-- **Base de Datos:** PostgreSQL (Supabase)
-- **ORM:** SQLAlchemy
-- **Autenticación:** JWT (JSON Web Tokens)
-- **Documentación API:** OpenAPI / Swagger (accesible en `/docs`)
+- **Framework:** React 19 con Vite
+- **Enrutamiento:** React Router DOM
+- **Cliente HTTP:** Axios
+- **Animaciones:** Framer Motion
+- **Notificaciones:** Sonner
+- **Estilos:** CSS / Componentes (Tailwind-merge, clsx)
 
-## Arquitectura y Estructura (Clean Architecture)
-El código fuente en `app/` está estructurado de la siguiente manera:
-- `core/`: Configuraciones centralizadas y variables de entorno (`.env`).
-- `domain/`: Entidades de negocio (esquemas y validaciones de Pydantic).
-- `infrastructure/`: Modelos de la base de datos (SQLAlchemy) y lógica de seguridad (generación de hashes y JWT).
-- `presentation/`: Controladores/Rutas de FastAPI que exponen los endpoints.
-- `use_cases/`: La lógica central de negocio que conecta las rutas con la infraestructura.
+## Arquitectura y Estructura
+El código fuente en `src/` está estructurado de la siguiente manera:
+- `api/`: Configuración de Axios e interceptores para peticiones al backend.
+- `assets/`: Recursos estáticos como imágenes e íconos.
+- `components/`: Componentes reutilizables de la interfaz de usuario.
+- `context/`: Proveedores de estado global de la aplicación (ej. autenticación).
+- `pages/`: Vistas principales de la aplicación (Dashboard, Login, Materias, etc.).
 
 ## Historial de Trabajo y Uso de Ramas
 
-El desarrollo de este sistema se realizó utilizando un flujo de control de versiones basado en *Feature Branches*, separando la implementación por capas funcionales. A continuación, se presenta la evidencia del trabajo en ramas y cómo fueron integradas al `main`:
+El desarrollo de este frontend se realizó utilizando un flujo de control de versiones basado en *Feature Branches*, separando la implementación por vistas y funcionalidades específicas de la interfaz. A continuación, se presenta la evidencia del trabajo en ramas y su historial de integración:
 
 ```text
-* 147e3c4 (HEAD -> main, origin/main, origin/HEAD) chore: ignorar archivos sensibles y caches de python
-* f9117da fix: instalar dependencias requeridas por pydantic EmailStr
-* 925966f (feature/exposiciones-evaluaciones) feat: implementar dominios de exposiciones y evaluaciones
-* 79575d2 (feature/materias-alumnos) feat: implementar dominios de materias, alumnos y grupos
-* d6f891f (feature/auth) feat: implementar autenticación JWT
-* eb8f66d (feature/init-setup) feat: inicializar proyecto FastAPI con Clean Architecture y configuración de DB
-* c255076 first commit
+* c040eab (HEAD -> feature/dashboard-panel, main, feature/materias-alumnos, feature/login-auth, feature/exposiciones-evaluaciones, develop) arreglos frontend
+* 89f1598 Cambios para despliegue
+* db70daa Agrega vercel.json para routing de React Router
+* 93619e8 chore: eliminar backend del repositorio, mantener solo frontend
+* 6998154 Se implemento el frontend
+* c93efb6 docs: crear README con evidencia de historial en ramas
 ```
 
 **Módulos desarrollados por rama:**
-1. **`feature/init-setup`**: Configuración de entorno, conexión a Supabase y configuración de SQLAlchemy.
-2. **`feature/auth`**: Implementación de seguridad, utilidades para contraseñas seguras (Bcrypt) y endpoints de inicio de sesión (`/api/v1/auth/login`).
-3. **`feature/materias-alumnos`**: Casos de uso y rutas para gestionar catálogos y registro de Alumnos, Materias y Grupos.
-4. **`feature/exposiciones-evaluaciones`**: Lógica para agendar exposiciones y registro de rúbricas de evaluación (previniendo evaluaciones duplicadas).
+1. **`feature/login-auth`**: Implementación de pantallas de inicio de sesión, integración de autenticación JWT con el backend y protección de rutas privadas.
+2. **`feature/materias-alumnos`**: Desarrollo de interfaces para gestionar y consultar el catálogo de Alumnos, Materias y Grupos.
+3. **`feature/exposiciones-evaluaciones`**: Creación de la interfaz para la consulta de exposiciones y el formulario interactivo para el registro de las rúbricas de evaluación.
+4. **`feature/dashboard-panel`**: Implementación del panel central (Dashboard) para la navegación, visualización de métricas generales y ruteo de la aplicación.
 
 ## Instalación y Ejecución
 
-1. Activa tu entorno virtual:
+1. Instala las dependencias del proyecto:
    ```bash
-   source venv/bin/activate
+   npm install
    ```
-2. Instala las dependencias:
+2. Configura tus variables de entorno creando un archivo `.env` en la raíz de la carpeta `frontend` basado en `.env.example`. Debe incluir la URL base de tu backend:
+   ```env
+   VITE_API_URL=http://localhost:8080/api/v1
+   ```
+3. Ejecuta el servidor de desarrollo:
    ```bash
-   pip install -r requirements.txt
+   npm run dev
    ```
-3. Configura tus variables de entorno creando un archivo `.env` en la raíz de `backend/` basado en la configuración necesaria (ver `app/core/config.py`). Debe incluir tu conexión `DATABASE_URL` usando el *Connection Pooler* de Supabase (puerto 6543, IPv4).
-4. Ejecuta el servidor:
-   ```bash
-   uvicorn app.main:app --reload --port 8080
-   ```
+4. Accede a la aplicación desde tu navegador, usualmente en `http://localhost:5173`.
