@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap');
 
 :root {
-  --bg-dark: #0a0a0c;
-  --bg-card: rgba(255, 255, 255, 0.03);
-  --bg-glass: rgba(15, 15, 18, 0.7);
-  --primary: #8b5cf6;
-  --primary-glow: rgba(139, 92, 246, 0.3);
-  --secondary: #06b6d4;
-  --text-main: #f4f4f5;
-  --text-muted: #a1a1aa;
-  --border-color: rgba(255, 255, 255, 0.08);
+  --bg-dark: #eef2f6;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-glass: rgba(255, 255, 255, 0.75);
+  --primary: #7c3aed;
+  --primary-glow: rgba(124, 58, 237, 0.15);
+  --secondary: #0ea5e9;
+  --text-main: #1f2937;
+  --text-muted: #64748b;
+  --border-color: rgba(15, 23, 42, 0.09);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -39,15 +39,16 @@ h1, h2, h3, h4 {
 /* Glassmorphism utility */
 .glass {
   background: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
 }
 
 /* Buttons */
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), #7c3aed);
+  background: linear-gradient(135deg, var(--primary), #6d28d9);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -65,19 +66,23 @@ h1, h2, h3, h4 {
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px var(--primary-glow);
-  filter: brightness(1.1);
+  filter: brightness(1.05);
 }
 
 /* Form inputs */
 input, select, textarea {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 14px;
-  color: white;
+  color: var(--text-main);
   outline: none;
   transition: var(--transition);
   width: 100%;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #94a3b8;
 }
 
 input:focus, select:focus, textarea:focus {

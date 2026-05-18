@@ -109,7 +109,7 @@ const Register = () => {
           justify-content: center;
           position: relative;
           overflow: hidden;
-          background: #050505;
+          background: var(--bg-dark);
         }
 
         .login-blob {

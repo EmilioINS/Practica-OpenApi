@@ -217,13 +217,13 @@ const Layout = () => {
         }
 
         .nav-item:hover {
-          background: rgba(255, 255, 255, 0.05);
-          color: var(--text-main);
+          background: rgba(124, 58, 237, 0.06);
+          color: var(--primary);
           transform: translateX(4px);
         }
 
         .nav-item.active {
-          background: linear-gradient(90deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0) 100%);
+          background: linear-gradient(90deg, rgba(124, 58, 237, 0.08) 0%, rgba(124, 58, 237, 0) 100%);
           color: var(--primary);
           font-weight: 600;
         }
@@ -272,7 +272,7 @@ const Layout = () => {
         }
 
         .logout-btn:hover {
-          background: rgba(239, 68, 68, 0.1);
+          background: rgba(239, 68, 68, 0.08);
         }
 
         .content {
@@ -297,13 +297,13 @@ const Layout = () => {
           justify-content: space-between;
           align-items: center;
           margin-bottom: 48px;
-          background: rgba(10, 10, 12, 0.6);
+          background: rgba(238, 242, 246, 0.75);
           backdrop-filter: blur(12px);
           padding: 20px 0;
           position: sticky;
           top: 0;
           z-index: 80;
-          border-bottom: 1px solid transparent;
+          border-bottom: 1px solid var(--border-color);
         }
 
         .top-bar-left {

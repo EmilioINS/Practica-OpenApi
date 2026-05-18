@@ -224,8 +224,9 @@ const Dashboard = () => {
           align-items: center;
           padding: 16px;
           border-radius: 16px;
-          background: rgba(255, 255, 255, 0.02);
+          background: rgba(0, 0, 0, 0.02);
           transition: var(--transition);
+          border: 1px solid var(--border-color);
         }
 
         .event-date {
