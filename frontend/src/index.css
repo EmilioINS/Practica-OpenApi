@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --bg-dark: #eef2f6;
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --bg-glass: rgba(255, 255, 255, 0.75);
-  --primary: #7c3aed;
-  --primary-glow: rgba(124, 58, 237, 0.15);
-  --secondary: #0ea5e9;
-  --text-main: #1f2937;
+  --bg-dark: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --primary: #117533;
+  --primary-glow: rgba(17, 117, 51, 0.25);
+  --secondary: #C8A145;
+  --text-main: #0f172a;
   --text-muted: #64748b;
-  --border-color: rgba(15, 23, 42, 0.09);
+  --border-color: rgba(17, 117, 51, 0.15);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -30,7 +30,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   letter-spacing: -0.02em;
   line-height: 1.2;
   margin-bottom: 0.5rem;
@@ -43,16 +43,17 @@ h1, h2, h3, h4 {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
 /* Buttons */
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), #6d28d9);
+  background: linear-gradient(135deg, var(--primary), #0c5a26);
   color: white;
   border: none;
   padding: 12px 24px;
   border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
@@ -72,13 +73,14 @@ h1, h2, h3, h4 {
 /* Form inputs */
 input, select, textarea {
   background: #ffffff;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 14px;
   color: var(--text-main);
   outline: none;
   transition: var(--transition);
   width: 100%;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 input::placeholder, textarea::placeholder {
@@ -87,7 +89,7 @@ input::placeholder, textarea::placeholder {
 
 input:focus, select:focus, textarea:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px var(--primary-glow);
+  box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
 /* Animations */
@@ -110,10 +112,10 @@ input:focus, select:focus, textarea:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: var(--primary);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: var(--secondary);
 }

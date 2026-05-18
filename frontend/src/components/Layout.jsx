@@ -162,7 +162,7 @@ const Layout = () => {
           display: flex;
           align-items: center;
           gap: 16px;
-          font-family: 'Outfit', sans-serif;
+          font-family: 'Montserrat', sans-serif;
           font-weight: 800;
           font-size: 1.6rem;
           color: var(--text-main);
@@ -217,13 +217,13 @@ const Layout = () => {
         }
 
         .nav-item:hover {
-          background: rgba(124, 58, 237, 0.06);
+          background: rgba(17, 117, 51, 0.05);
           color: var(--primary);
           transform: translateX(4px);
         }
 
         .nav-item.active {
-          background: linear-gradient(90deg, rgba(124, 58, 237, 0.08) 0%, rgba(124, 58, 237, 0) 100%);
+          background: linear-gradient(90deg, rgba(17, 117, 51, 0.1) 0%, rgba(17, 117, 51, 0) 100%);
           color: var(--primary);
           font-weight: 600;
         }
@@ -297,7 +297,7 @@ const Layout = () => {
           justify-content: space-between;
           align-items: center;
           margin-bottom: 48px;
-          background: rgba(238, 242, 246, 0.75);
+          background: rgba(255, 255, 255, 0.85);
           backdrop-filter: blur(12px);
           padding: 20px 0;
           position: sticky;
@@ -323,8 +323,8 @@ const Layout = () => {
         }
 
         .menu-toggle:hover {
-          color: var(--text-main);
-          border-color: var(--text-muted);
+          color: var(--primary);
+          border-color: var(--primary);
         }
 
         .page-title h2 {
