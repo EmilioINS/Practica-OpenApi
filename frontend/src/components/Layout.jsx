@@ -272,7 +272,7 @@ const Layout = () => {
         }
 
         .logout-btn:hover {
-          background: rgba(239, 68, 68, 0.1);
+          background: rgba(239, 68, 68, 0.08);
         }
 
         .content {
@@ -303,7 +303,7 @@ const Layout = () => {
           position: sticky;
           top: 0;
           z-index: 80;
-          border-bottom: 1px solid transparent;
+          border-bottom: 1px solid var(--border-color);
         }
 
         .top-bar-left {

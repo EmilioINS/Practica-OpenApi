@@ -12,6 +12,12 @@ import Evaluaciones from './pages/Evaluaciones';
 
 import Register from './pages/Register';
 
+/**
+ * ProtectedRoute Component
+ * Prevents unauthorized users from accessing application views.
+ * If the authentication state is loading, it renders nothing.
+ * If the user is not authenticated, it redirects to the login page.
+ */
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
   
@@ -21,6 +27,10 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+/**
+ * Main App Component
+ * Defines the router structure, route guards, and layouts.
+ */
 function App() {
   return (
     <AuthProvider>

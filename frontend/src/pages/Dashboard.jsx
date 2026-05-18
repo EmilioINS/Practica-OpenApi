@@ -226,6 +226,7 @@ const Dashboard = () => {
           border-radius: 16px;
           background: rgba(17, 117, 51, 0.03);
           transition: var(--transition);
+          border: 1px solid var(--border-color);
         }
 
         .event-date {
